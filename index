@@ -1,0 +1,453 @@
+import 'package:flutter/material.dart';
+void main() =>runApp(const MaterialApp(
+    home:  test(),
+)
+
+);
+
+
+class test extends StatefulWidget {
+  const test({super.key});
+
+  @override
+  State<test> createState() => _testState();
+}
+
+class _testState extends State<test> {
+  bool _Normalvisible=false;
+  bool _Underweightvisible=false;
+  bool _Overweightvisible=false;
+  bool _Obesevisible=false;
+  final TextEditingController _height1 = TextEditingController();
+  final TextEditingController _weight1 = TextEditingController();
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(onPressed: (){},
+          icon: const Icon(Icons.menu_sharp,
+          size: 30,
+          color: Colors.black,),
+        ),
+        toolbarHeight: 80,
+        
+        title: const Text('BMI CALCULATOR',
+           style: TextStyle(color: Colors.black,
+             letterSpacing: 2.0,
+
+           ),
+
+
+        ),
+        elevation: 0.0,
+
+        centerTitle: true,
+        backgroundColor: Colors.amber[300],
+
+      ),
+      backgroundColor: Colors.black12,
+     floatingActionButton: Padding(
+       padding: const EdgeInsets.fromLTRB(10.0,0.0,0.0,10.0),
+       child: SizedBox(
+         height: 100,
+         width: 100,
+         child:  FloatingActionButton.small(
+           elevation: 2.0,
+
+           onPressed: () {
+             },
+           foregroundColor: Colors.black87,
+           backgroundColor: Colors.grey,
+           child: const Icon(Icons.home,
+             size: 45,
+           ),
+
+         ),
+       ),
+     ),
+
+      body:
+
+           Wrap(
+            children: <Widget>[
+           Container(
+           decoration: const BoxDecoration(
+               image: DecorationImage(
+               image: AssetImage("assets/Background.jpg"),
+      fit: BoxFit.cover,
+    ),
+    ),
+           ),
+              Padding(
+                padding:const EdgeInsets.fromLTRB(30.0,30.0,30.0,0.0),
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                   decoration: BoxDecoration(
+                     borderRadius: BorderRadius.circular(15),
+                     color: Colors.grey,
+                   ),
+                  child: TextField(
+
+                    controller: _weight1,
+                    style: const TextStyle(fontSize: 20,
+                    color: Colors.black,),
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+
+                      prefixIcon: Icon(Icons.monitor_weight_outlined,
+                                size: 45,
+                                color: Colors.amber,),
+
+                        hintText: '  Enter Weight(Kg)',
+                        hintStyle: TextStyle(fontSize: 20,
+
+                  color: Colors.black,)
+                  ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+
+
+
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30.0,20.0,30.0,0.0),
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.grey,),
+
+                    child: TextField(
+                    controller: _height1,
+
+
+                     style:const  TextStyle(fontSize: 20,
+                     wordSpacing: 2,
+                     color: Colors.black,),
+                      keyboardType: TextInputType.number,
+                      decoration:const InputDecoration(
+                        border: InputBorder.none,
+
+                        prefixIcon: Icon(Icons.height_outlined,
+                        size: 45,
+
+                        color: Colors.amber,),
+
+
+
+                        hintText: '  Enter Height(cm)',
+                        hintStyle: TextStyle(fontSize: 20,
+                        color: Colors.black,),
+
+                      ),
+                        ),
+
+
+                  ),
+                ),
+
+              Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: ElevatedButton(onPressed:() {
+
+
+                  double Height = double.parse(_height1.text);
+                  double Weight = double.parse(_weight1.text);
+                  Height=Height*0.01;
+                  double BMI=Weight/(Height*Height);
+                  if(BMI<18.5)
+                    {
+                      setState(() {
+                        _Obesevisible=false;
+                        _Overweightvisible=false;
+                        _Normalvisible=false;
+                        _Underweightvisible=true;
+                      });
+                    }
+                  if(BMI>18.5 && BMI<=24.9)
+                    {
+                      _Obesevisible=false;
+                      _Overweightvisible=false;
+                      _Normalvisible=true;
+                      _Underweightvisible=false;
+                    }
+                  if(BMI>25.0 && BMI<=29.9)
+                  {
+                    _Obesevisible=false;
+                    _Overweightvisible=true;
+                    _Normalvisible=false;
+                    _Underweightvisible=false;
+                  }
+                  if(BMI>30)
+                  {
+                    _Obesevisible=true;
+                    _Overweightvisible=false;
+                    _Normalvisible=false;
+                    _Underweightvisible=false;
+                  }
+
+
+                  showDialog(context: context, builder: (context) {
+
+                    return
+
+                         AlertDialog(
+
+                           content: ListView(
+
+                             shrinkWrap: true,
+                             //crossAxisAlignment: CrossAxisAlignment.center,
+                             //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                             //mainAxisSize: MainAxisSize.min,
+                             children: [
+                               
+
+
+                                  Text("Your BMI is $BMI",
+                                 style: const TextStyle(fontSize: 40,
+                                 color: Colors.grey,),),
+                               Visibility(
+
+                                   visible: _Normalvisible,
+                                   child:
+                                  const  Image(image: AssetImage('assets/Normal.jpg',
+                                   ),
+                                       height: 250,
+                                       width:1000,
+                                       fit: BoxFit.fitHeight)),
+
+
+
+                                Visibility(
+                                     visible: _Underweightvisible,
+                                     child:
+                                     const Image(image: AssetImage('assets/Underweight.jpg'),
+                                         height: 250,
+                                         width: 1000,
+                                         fit: BoxFit.fitHeight),
+                                   ),
+
+
+                                 Visibility(
+                                     visible: _Overweightvisible,
+                                     child:
+                                     const Image(image: AssetImage('assets/Overweight.jpg'),
+                                         height:250,
+                                         width: 1000,
+                                         fit: BoxFit.fitHeight),
+                                   ),
+
+
+                              Visibility(
+                                   visible: _Obesevisible,
+                                   child:
+                                     const Image(image: AssetImage('assets/Obese.jpg'),
+                                         height:250,
+                                         width:1000,
+                                         fit: BoxFit.fitHeight),
+                                 ),
+
+
+
+                             ],
+                           ),
+                          title: const Text( 'Body Mass Index',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 25,
+                          color: Colors.black54,
+                            letterSpacing: 2.0,
+
+
+                          ),),
+                          actions: [
+
+                            TextButton(onPressed: () {
+                              Navigator.pop(context);
+
+                            },
+                                child:const Text('OK',
+                                style: TextStyle(fontSize: 25,),),
+                            ),
+
+                          ],
+                          elevation: 10,
+                          backgroundColor: Colors.amber,
+
+
+                        );
+
+
+
+                  },
+                  );
+
+                },
+                    child: const Text('Execute',
+                    style: TextStyle(fontSize: 25,
+                    fontFamily: 'ComicNeue'),),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(30.0),
+                child:
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('BMI Classification',
+                      style: TextStyle(
+
+                        fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                      letterSpacing: 2.0,
+                        fontSize: 25,
+                      ),),
+                      SizedBox(height: 10,),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                           Row(
+                             mainAxisSize: MainAxisSize.max,
+                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                             children: [
+                               Text('Very Severely Underweight',
+                          style: TextStyle(fontSize: 17,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,),),
+
+
+                           Text('<16',
+                           style: TextStyle(fontWeight: FontWeight.w500,
+                           color: Colors.grey,
+                           fontSize: 17,),),
+                               ],
+                           ),
+                          Row(
+
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text('Severely Underweight',
+                                style: TextStyle(fontSize: 17,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,),),
+                              Text('16-17',
+                                style: TextStyle(fontWeight: FontWeight.w500,
+                                  color: Colors.grey,
+                                  fontSize: 17,),),
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Underweight',
+                                style: TextStyle(fontSize: 17,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,),),
+
+                              Text('17-18.5',
+                                style: TextStyle(fontWeight: FontWeight.w500,
+                                  color: Colors.grey,
+                                  fontSize: 17,),),
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Normal',
+                                style: TextStyle(fontSize: 17,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,),),
+
+                              Text('18.5-25',
+                                style: TextStyle(fontWeight: FontWeight.w500,
+                                  color: Colors.grey,
+                                  fontSize: 17,),),
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Overweight',
+                                style: TextStyle(fontSize: 17,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,),),
+
+                              Text('25-30',
+                                style: TextStyle(fontWeight: FontWeight.w500,
+                                  color: Colors.grey,
+                                  fontSize: 17,),),
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Obese Class I',
+                                style: TextStyle(fontSize: 17,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,),),
+
+                              Text('30-35',
+                                style: TextStyle(fontWeight: FontWeight.w500,
+                                  color: Colors.grey,
+                                  fontSize: 17,),),
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Obese Class II',
+                                style: TextStyle(fontSize: 17,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,),),
+
+                              Text('35-40',
+                                style: TextStyle(fontWeight: FontWeight.w500,
+                                  color: Colors.grey,
+                                  fontSize: 17,),),
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Obese Class III',
+                                style: TextStyle(fontSize: 17,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,),),
+
+                              Text('>40',
+                                style: TextStyle(fontWeight: FontWeight.w500,
+                                  color: Colors.grey,
+                                  fontSize: 17,),),
+                            ],
+                          ),
+                        ],
+                      ),
+
+
+                    ],
+                  ),
+
+              ),
+
+            ],
+          ),
+
+
+    );
+
+  }
+}
